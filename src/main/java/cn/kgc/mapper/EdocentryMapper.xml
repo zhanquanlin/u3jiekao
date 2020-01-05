@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kgc.mapper.EdocentryMapper">
+  <resultMap id="BaseResultMap" type="cn.kgc.book.Edocentry">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="category_Id" jdbcType="INTEGER" property="categoryId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="uploaduser" jdbcType="VARCHAR" property="uploaduser" />
+    <result column="createdate" jdbcType="DATE" property="createdate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, category_Id, title, summary, uploaduser, createdate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from edoc_entry
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from edoc_entry
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.kgc.book.Edocentry">
+    insert into edoc_entry (id, category_Id, title, 
+      summary, uploaduser, createdate
+      )
+    values (#{id,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{summary,jdbcType=VARCHAR}, #{uploaduser,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.kgc.book.Edocentry">
+    insert into edoc_entry
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="categoryId != null">
+        category_Id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="summary != null">
+        summary,
+      </if>
+      <if test="uploaduser != null">
+        uploaduser,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="uploaduser != null">
+        #{uploaduser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.kgc.book.Edocentry">
+    update edoc_entry
+    <set>
+      <if test="categoryId != null">
+        category_Id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="uploaduser != null">
+        uploaduser = #{uploaduser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.kgc.book.Edocentry">
+    update edoc_entry
+    set category_Id = #{categoryId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      uploaduser = #{uploaduser,jdbcType=VARCHAR},
+      createdate = #{createdate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectBybook" parameterType="User" resultType="Edocentry" resultMap="BaseResultMap">
+    select * from edoc_entry
+    <where>
+      <if test="cid!=0">
+        and category_Id=#{cid}
+      </if>
+    </where>
+  </select>
+
+  <insert id="add" parameterType="book">
+    insert into edoc_entry values (null,#{cid},#{bookname},#{bookzhai},#{bookr},#{bookdate})
+  </insert>
+
+    <select id="selectBybooked" parameterType="java.lang.Integer" resultType="Edocentry" resultMap="BaseResultMap">
+        select * from edoc_entry where id=#{id}
+    </select>
+
+    <update id="update" parameterType="book">
+        update edoc_entry set title=#{bookname},summary=#{bookzhai},uploaduser=#{bookr},createdate=#{bookdate} WHERE id=#{cid}
+    </update>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from edoc_entry where id=#{id}
+  </delete>
+</mapper>
